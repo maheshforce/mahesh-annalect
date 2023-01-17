@@ -1,0 +1,13 @@
+read -p "enter file path   " path
+if [ -f $path ];
+then
+        echo "file_path passwords are enable"
+        if [ -w $path ];
+        then
+                echo "you have permision to edit file"
+        else
+                echo "you dont have have permision to edit file"
+        fi
+else
+        echo "not file path exist"
+fi

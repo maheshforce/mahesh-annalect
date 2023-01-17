@@ -1,0 +1,32 @@
+function add()
+{
+        read -p "enter a value" a
+        read -p "enter a value" b
+        c=`expr $a + $b`
+        echo "addition is $c"
+}
+function sub()
+{
+        read -p "enter a value" a
+        read -p "enter a value" b
+        c=`expr $a - $b`
+        echo "subraction is $c"
+}
+function mul()
+{
+        read -p "enter a value" a
+        read -p "enter a value" b
+        c=`expr $a * $b`
+        echo "multiplication is $c"
+}
+function div()
+{
+        read -p "enter a value" a
+        read -p "enter a value" b
+        c=`expr $a / $b`
+        echo "division is $c"
+}
+add
+sub
+mul
+div

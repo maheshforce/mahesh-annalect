@@ -1,0 +1,11 @@
+read -p "enter  row" row
+read -p "enter col " col
+for((i=1;i<=$row;i++))
+do
+        for((j=$i;j<=$col;j++))
+        do
+                echo -n "$i"
+        done
+        echo -e "\n"
+
+done
