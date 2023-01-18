@@ -1,0 +1,18 @@
+for ((i=1;i<=2;i++))
+do
+        read -p "enter your base image name to pull" s
+        read -p "enter 1st container_name  " c1
+        docker pull $s
+        docker run -td --name $c1 $s
+        read -p "enter your image to install" q
+        docker exec -it $c1 sh -c "yum install $q -y"
+        read -p "enter image1 " n1
+        docker commit $c1 $n1
+        read -p "enter 2nd container_name " c2
+        docker run -td --name $c2 $n1
+        docker exec -it $c2 sh -c "dd if=/dev/zero of=/root/1.txt bs=1M count=500"
+        read -p "enter image2 " n3
+        docker commit $c2 $n3
+        read -p " enter path to save logfile " log
+        docker history $n3 >> $log
+done
