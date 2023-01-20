@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# function to check if a string contains only alphanumeric characters
+is_alphanumeric() {
+  if [[ $1 =~ ^[a-zA-Z0-9]+$ ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# function to check if a string contains at least 1 number and 1 symbol
+has_number_and_symbol() {
+  if [[ $1 =~ [0-9] && $1 =~ [^a-zA-Z0-9] ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# function to sign up a new user
+sign_up() {
+  read -p "Enter your desired username: " username
+  while ! is_alphanumeric $username; do
+    read -p "Username can only contain alphanumeric characters. Please enter a valid username: " username
+  done
+  read -s -p "Enter a new password: " password
+  while [ ${#password} -lt 8 ] || ! has_number_and_symbol $password; do
+    read -s -p "Password must be at least 8 characters long and contain at least 1 number and 1 symbol. Please enter a valid password: " password
+  done
+  read -s -p "Confirm your password: " confirm_password
+  while [ "$password" != "$confirm_password" ]; do
+    read -s -p "Passwords do not match. Please confirm your password again: " confirm_password
+  done
+  echo "$username:$password" >> users.txt
+  echo "User registered successfully!"
+  log "User $username registered"
+}
+
+# function to sign in an existing user
+sign_in() {
+  read -p "Enter your username: " username
+  read -s -p "Enter your password: " password
+  if grep -q "$username:$password" users.txt; then
+    echo "Welcome, $username!"
+    log "User $username signed in"
+    while true; do
+      read -p "What would you like to do? (Take Test/View Test/Sign Out) " choice
+      case $choice in
+        Take*Test)
+          take_test
+          break;;
+        View*Test)
+          view_test
+          break;;
+        Sign*Out)
+          echo "Goodbye, $username!"
+          log "User $username signed out"
+          break;;
+        *)
+          echo "Invalid choice. Please enter a valid option.";;
+      esac
+    done
+  else
+    echo "Invalid username or password. Please try again."
+    log "User $username entered invalid login credentials"
+  fi
+}
+
+# function to take a test
+take_test() {
+  mkdir -p ~/.TestData
+  touch ~/.TestData/answer_file.csv
+  local question_bank=question_bank.txt
+  if [ -f $1 ]; then
+    question_bank=$1
+  fi
+  while read -r line; do
+    local question=$(echo $line | cut -d ":" -f1)
+    local options=$(echo $line | cut -d ":" -f2)
+    echo "$question"
+    echo "$options"
+    read
