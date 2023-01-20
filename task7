@@ -1,0 +1,9 @@
+read -p "enter base image" b
+enetr -p "enter container1 name" c
+docker run -td --name $c $b
+read -p "enter package to install package in $c container" p
+docker exec -it $c sh -c yum install $p
+read -p "enter rebuild image name" i
+docker commit $c $i
+read -p "enter bridge network name" bg
+docker run -td --net $bg $i
