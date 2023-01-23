@@ -1,0 +1,26 @@
+five(){
+for ((i=1;i<=5;i++))
+do
+        echo "creating five containers"
+        docker network ls
+        read -p "enter network name for container" n
+        read -p "enter  name for container" name
+        docker run -td --name $name --net $n centos:7
+done
+}
+network(){
+echo "creating network"
+read -p "enter network name" net
+read -p "enter subnet of container" s
+read -p "enter ip of container" ip
+docker network  create --driver bridge --subnet $s --ip-range $ip $net
+docker network ls
+}
+demo(){
+read -p "enter a container name to enter " cn
+read -p "enter container to ping" p
+docker exec -it $cn sh -c ping $p
+}
+network
+five
+demo
