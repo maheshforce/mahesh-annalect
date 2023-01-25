@@ -1,0 +1,5 @@
+docker network create --driver bridge my_network
+for ((i=1;i<=6;i++))
+do
+	docker run -td --name container$i centos:7 my_network
+done
