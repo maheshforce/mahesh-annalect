@@ -1,0 +1,4 @@
+FROM centos:7
+COPY script.sh /opt
+RUN chmod 777 script.sh
+script.sh
